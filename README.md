@@ -14,8 +14,8 @@ Song URLS can be Youtube, Soundcloud, or any website the `youtube-dl` supports.
 
 ```bash
 go run .
-## Or, if not using mpd default port 6600
-go run . -= ${MDP_PORT}
+# Manually set ports
+go run . -mpdport=6600 -port=8080
 ```
 
 ### Improvements over Bjb 2
@@ -32,4 +32,3 @@ Mainly front end improvements are needed:
    - [ ] Connection lost is shown when connection is working occasionally
 Other things:
  - [ ] Clear MPD on server shutdown
- - [ ] Add custom server port

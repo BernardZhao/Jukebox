@@ -128,13 +128,13 @@ func validateName(name []byte) bool {
 }
 
 func main() {
+	var port string
+	flag.StringVar(&port, "port", "8080", "Server port number")
+	var mpdport string
+	flag.StringVar(&mpdport, "mpdport", "6600", "MPD port number")
 	flag.Parse()
-	port := "6600"
-	if flag.NArg() == 1 {
-		port = flag.Arg(0)
-	}
 	// MPD Client connection
-	conn, err := mpd.Dial("tcp", "localhost:"+port)
+	conn, err := mpd.Dial("tcp", "localhost:"+mpdport)
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -145,7 +145,7 @@ func main() {
 	// Manages state and player
 	jukebox = NewJukebox(conn)
 	// Watcher set up - check when songs start and end
-	w, err := mpd.NewWatcher("tcp", "localhost:"+port, "", "player")
+	w, err := mpd.NewWatcher("tcp", "localhost:"+mpdport, "", "player")
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -176,6 +176,6 @@ func main() {
 	fs := http.FileServer(http.Dir("./priv"))
 	http.Handle("/", fs)
 	http.HandleFunc("/ws", socketinit)
-	log.Println("Starting up server...")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Println("Starting up server on port: " + port)
+	log.Fatal(http.ListenAndServe(":"+port, nil))
 }
