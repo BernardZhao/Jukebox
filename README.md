@@ -2,7 +2,7 @@
 
 A web platform to collectively queue songs to play.
 
-Built on top of the current [Bjb1](https://github.com/ocf/BJukebox), dead [Bjb2](https://github.com/dkess/BJukebox2/blob/master/bjb.py), and Ryan's work on a similar [Bjb3](https://github.com/NotRyan/BJukebox3)
+Built on top of the current [Bjb1](https://github.com/ocf/BJukebox), dead [Bjb2](https://github.com/dkess/BJukebox2/blob/master/bjb.py), and [Ryan's](https://github.com/NotRyan) work on a similar [Bjb3](https://github.com/NotRyan/BJukebox3)
 
 ## Usage
 
@@ -30,7 +30,9 @@ Mainly front end improvements are needed:
  - [ ] Volume slider needs styling
  - [ ] More detailed error display
  - [ ] Connection lost is shown when connection is working occasionally
+
 Networking issues:
  - [ ] Occasional broken pipe
+
 Other things:
  - [ ] Clear MPD on server shutdown
