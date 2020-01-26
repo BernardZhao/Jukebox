@@ -14,10 +14,12 @@ Song URLS can be Youtube, Soundcloud, or any website the `youtube-dl` supports.
 
 ## Running
 
-```bash
-go run .
-# Manually set ports
-go run . -mpdport=6600 -port=8080
+```console
+$ mpd # Make sure mpd is running and check what port it is on
+$ sudo youtube-dl -U # Update youtube-dl when possible
+
+$ go run .
+$ go run . -mpdport=6600 -port=8080 # Manually set ports
 ```
 
 ### Improvements over Bjb 2
