@@ -1,8 +1,10 @@
-# Jukebox 
+# Jukebox
 
 A web platform to collectively queue songs to play.
 
 Built on top of the current [Bjb1](https://github.com/ocf/BJukebox), dead [Bjb2](https://github.com/dkess/BJukebox2/blob/master/bjb.py), and [Ryan's](https://github.com/NotRyan) work on a similar [Bjb3](https://github.com/NotRyan/BJukebox3)
+
+Aka Bjb 3 (2.0)
 
 ## Usage
 
