@@ -281,11 +281,8 @@ window.onload = function() {
 		wsInit();
 	}
 
-	document.getElementById("b-voldown").onclick = function() {
-		sock.send("voldown");
-	}
-	document.getElementById("b-volup").onclick = function() {
-		sock.send("volup");
+  document.getElementById("volslider").onchange = function(event) {
+		sock.send("volume " + event.target.value)
 	}
 
 	// Menu Items

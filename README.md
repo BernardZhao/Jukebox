@@ -1,4 +1,4 @@
-# BJukebox 
+# Jukebox 
 
 A web platform to collectively queue songs to play.
 
@@ -27,8 +27,10 @@ go run . -mpdport=6600 -port=8080
 ### Todo
 
 Mainly front end improvements are needed:
-   - [ ] A way to set the volume instead of incrementing
-   - [ ] More detailed error display
-   - [ ] Connection lost is shown when connection is working occasionally
+ - [ ] Volume slider needs styling
+ - [ ] More detailed error display
+ - [ ] Connection lost is shown when connection is working occasionally
+Networking issues:
+ - [ ] Occasional broken pipe
 Other things:
  - [ ] Clear MPD on server shutdown

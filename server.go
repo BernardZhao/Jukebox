@@ -85,13 +85,15 @@ func socketHandle(c *websocket.Conn, name []byte) {
 				log.Println(err)
 			}
 		case "volume":
-			if volume, err := strconv.Atoi(messageTokens[1]); err != nil {
-				jukebox.SetVolume(volume)
+			volume, err := strconv.Atoi(messageTokens[1])
+			if err != nil {
+				log.Println(err)
 			}
+			log.Println(jukebox.SetVolume(volume))
 		case "remove":
 			songPosition, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println("Invalid queue position specified for removal")
+				log.Println(err)
 				continue
 			}
 			jukebox.RemoveSong(string(name), songPosition)
