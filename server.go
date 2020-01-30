@@ -80,14 +80,17 @@ func socketHandle(c *websocket.Conn, name []byte) {
 		switch messageTokens := strings.Split(string(message), " "); messageTokens[0] {
 		case "ping":
 			c.WriteMessage(mt, []byte("pong"))
+			continue
 		case "skip":
 			if err := jukebox.SkipSong(); err != nil {
 				log.Println(err)
+				continue
 			}
 		case "volume":
 			volume, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
 				log.Println(err)
+				continue
 			}
 			log.Println(jukebox.SetVolume(volume))
 		case "remove":
@@ -107,6 +110,7 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			c.WriteMessage(1, []byte("ok"))
 		default:
 			log.Print("Illegal command: ", messageTokens[0])
+			continue
 		}
 		sendState()
 	}
@@ -130,6 +134,7 @@ func validateName(name []byte) bool {
 }
 
 func main() {
+	// Command line flags
 	var port string
 	flag.StringVar(&port, "port", "8080", "Server port number")
 	var mpdport string
@@ -142,6 +147,9 @@ func main() {
 	}
 	defer conn.Close()
 	if err := conn.Consume(true); err != nil { // Remove song when finished playing
+		log.Fatalln(err)
+	}
+	if err := conn.Clear(); err != nil { // Clear mpd on startup
 		log.Fatalln(err)
 	}
 	// Manages state and player

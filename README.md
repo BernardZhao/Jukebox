@@ -37,6 +37,3 @@ Mainly front end improvements are needed:
 
 Networking issues:
  - [ ] Occasional broken pipe
-
-Other things:
- - [ ] Clear MPD on server shutdown
