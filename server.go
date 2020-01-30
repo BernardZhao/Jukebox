@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/fhs/gompd/mpd"
 	"github.com/gorilla/websocket"
@@ -53,7 +54,7 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			log.Printf("Message error: %+v\n", err)
+			log.Printf("Closing: %+v\n", err)
 			return
 		}
 
@@ -72,7 +73,7 @@ func socketHandle(c *websocket.Conn, name []byte) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			log.Printf("Message error: %+v\n", err)
+			log.Printf("Closing: %+v\n", err)
 			return
 		}
 		switch messageTokens := strings.Split(string(message), " "); messageTokens[0] {
@@ -153,6 +154,15 @@ func main() {
 	if err := conn.Clear(); err != nil { // Clear mpd on startup
 		log.Fatalln(err)
 	}
+	// Keep MPD Client connection alive
+	go func() {
+		for {
+			time.Sleep(30 * time.Second)
+			if err := conn.Ping(); err != nil {
+				log.Println(err)
+			}
+		}
+	}()
 	// Manages state and player
 	jukebox = NewJukebox(conn)
 	// Watcher set up - check when songs start and end
