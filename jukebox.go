@@ -20,14 +20,25 @@ type Jukebox struct {
 }
 
 func NewJukebox(conn *mpd.Client) Jukebox {
+	var volume int
+	var err error
+
 	attrs, err := conn.Status()
 	if err != nil {
 		log.Fatalln(err)
 	}
-	volume, err := strconv.Atoi(attrs["volume"])
+
+	if mpvVol, ok := attrs["volume"]; ok {
+		volume, err = strconv.Atoi(mpvVol)
+	} else {
+		volume = 80
+		err = conn.SetVolume(volume)
+	}
+
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 	return Jukebox{conn: conn, Queues: make(map[string][]Song), Volume: volume}
 }
 
