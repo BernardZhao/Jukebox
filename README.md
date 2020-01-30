@@ -32,8 +32,8 @@ $ go run . -mpdport=6600 -port=8080 # Manually set ports
 
 Mainly front end improvements are needed:
  - [ ] Volume slider needs styling
- - [ ] More detailed error display
- - [ ] Connection lost is shown when connection is working occasionally
+ - [ ] Actual error display on frontend
 
-Networking issues:
- - [ ] Occasional broken pipe
+Big networking issue:
+
+Occasional broken pipe, client connection to mpd closes, then everything breaks. I've only been able to reproduce this by starting the server, playing a song, then waiting 30 secs and then trying to skip / perform any other mpd operation. This generates an EOF error, and then all subsequent mpd client commands error with `write tcp [::1]:54651->[::1]:6600: write: broken pipe`

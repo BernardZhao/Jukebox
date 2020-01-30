@@ -41,7 +41,7 @@ func (server *Server) addConnection(c *websocket.Conn) {
 func socketinit(w http.ResponseWriter, r *http.Request) {
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("Websocket upgrade error: ", err)
+		log.Printf("Websocket upgrade error: %+v\n", err)
 	}
 	server.addConnection(c)
 	defer c.Close()
@@ -53,8 +53,7 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			log.Println(err)
-			server.removeConnection(c)
+			log.Printf("Message error: %+v\n", err)
 			return
 		}
 
@@ -73,9 +72,8 @@ func socketHandle(c *websocket.Conn, name []byte) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			server.removeConnection(c)
-			log.Println(err)
-			break
+			log.Printf("Message error: %+v\n", err)
+			return
 		}
 		switch messageTokens := strings.Split(string(message), " "); messageTokens[0] {
 		case "ping":
@@ -83,20 +81,23 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			continue
 		case "skip":
 			if err := jukebox.SkipSong(); err != nil {
-				log.Println(err)
+				log.Printf("Skip error: %+v\n", err)
 				continue
 			}
 		case "volume":
 			volume, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println(err)
+				log.Printf("Volume parse error: %+v\n", err)
 				continue
 			}
-			log.Println(jukebox.SetVolume(volume))
+			if err := jukebox.SetVolume(volume); err != nil {
+				log.Printf("Set volume error: %+v\n", err)
+				continue
+			}
 		case "remove":
 			songPosition, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println(err)
+				log.Printf("Remove parse error: %+v\n", err)
 				continue
 			}
 			jukebox.RemoveSong(string(name), songPosition)
@@ -104,12 +105,12 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			songurl := messageTokens[1]
 			err := jukebox.AddSongURL(string(name), songurl)
 			if err != nil {
-				log.Println("Error fetching song for url :", songurl, ", error: ", err)
+				log.Printf("Error adding songurl: %+v\n", err)
 				continue
 			}
 			c.WriteMessage(1, []byte("ok"))
 		default:
-			log.Print("Illegal command: ", messageTokens[0])
+			log.Println("Illegal command: ", messageTokens[0])
 			continue
 		}
 		sendState()
@@ -164,13 +165,13 @@ func main() {
 		for range w.Event {
 			status, err := conn.Status()
 			if err != nil {
-				log.Println(err)
+				log.Printf("Status fetch error: %+v\n", err)
 			}
 			switch status["state"] {
 			case "play":
 			case "stop": // When music stops, move onto the next song
 				if err := jukebox.CycleSong(); err != nil {
-					log.Println(err)
+					log.Printf("Cycle song error: %+v\n", err)
 				}
 				sendState()
 			case "pause":
@@ -187,5 +188,5 @@ func main() {
 	http.Handle("/", fs)
 	http.HandleFunc("/ws", socketinit)
 	log.Println("Starting up server on port: " + port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	log.Fatalln(http.ListenAndServe(":"+port, nil))
 }

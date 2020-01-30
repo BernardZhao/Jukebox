@@ -80,8 +80,7 @@ func (juke *Jukebox) AddSongURL(name string, songURL string) error {
 	if err != nil {
 		return err
 	}
-	juke.addSong(name, song)
-	return nil
+	return juke.addSong(name, song)
 }
 
 func (juke *Jukebox) RemoveSong(name string, position int) {
