@@ -6,15 +6,15 @@ import (
 )
 
 type Song struct {
-	Title     string `json:"title"`
-	URL       string `json:"url"`
-	Thumbnail string `json:"thumbnail"`
-	WebURL    string `json:"webURL"`
+	Title      string `json:"title"`
+	URL        string `json:"url"`
+	Thumbnail  string `json:"thumbnail"`
+	WebpageURL string `json:"webpage_url"`
 }
 
 func fetchSong(url string) (Song, error) {
 	// Maybe make this function return a promise or something in the future
-	var songData Info
+	var songData Song
 	// JSON dump has no overhead, and we get more info that we need that might be useful
 	cmd := exec.Command("youtube-dl", "--no-playlist", "-J", "-f bestaudio/bestvideo", url)
 	stdOut, err := cmd.StdoutPipe()
@@ -33,10 +33,5 @@ func fetchSong(url string) (Song, error) {
 
 	cmd.Wait()
 	// Only using these fields atm
-	return Song{
-		Title:     songData.Title,
-		URL:       songData.URL,
-		Thumbnail: songData.Thumbnail,
-		WebURL:    url,
-	}, nil
+	return songData, nil
 }
