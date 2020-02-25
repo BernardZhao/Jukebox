@@ -10,7 +10,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/fhs/gompd/mpd"
+	"github.com/fhs/gompd/v2/mpd"
 	"github.com/gorilla/websocket"
 )
 
