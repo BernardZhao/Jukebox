@@ -1,0 +1,9 @@
+version: '3.7'
+services:
+  jukebox:
+    build: .
+    network_mode: host
+    # expose:
+    #     - "8000"
+    # ports:
+    #     - "8000:8000"
