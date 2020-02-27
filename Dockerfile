@@ -1,6 +1,6 @@
 # build stage
 FROM golang:alpine AS build-env
-ADD . /src
+COPY . /src
 RUN cd /src && go build -o .
 
 # final stage
@@ -9,5 +9,6 @@ RUN ["pip3", "install", "youtube-dl"]
 # Test youtube-dl
 RUN youtube-dl --version
 WORKDIR /app
+COPY priv ./priv
 COPY --from=build-env /src/Jukebox /app/
 ENTRYPOINT ./Jukebox
