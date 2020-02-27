@@ -144,7 +144,7 @@ func main() {
 	var mpdport string
 	flag.StringVar(&mpdport, "mpdport", "6600", "MPD port number")
 	flag.Parse()
-	// MPD Client connection
+	log.Println("Attempting MPD Client connection")
 	conn, err := mpd.Dial("tcp", host+":"+mpdport)
 	if err != nil {
 		log.Fatalln(err)
@@ -156,6 +156,7 @@ func main() {
 	if err := conn.Clear(); err != nil { // Clear mpd on startup
 		log.Fatalln(err)
 	}
+	log.Println("Successfully connected to MPD")
 	// Keep MPD Client connection alive
 	go func() {
 		for {
@@ -167,11 +168,12 @@ func main() {
 	}()
 	// Manages state and player
 	jukebox = NewJukebox(conn)
-	// Watcher set up - check when songs start and end
+	log.Println("Attempting MPD Watcher connection")
 	w, err := mpd.NewWatcher("tcp", host+":"+mpdport, "", "player")
 	if err != nil {
 		log.Fatalln(err)
 	}
+	log.Println("Successfully watching MPD")
 	defer w.Close()
 	go func() {
 		for range w.Event {
