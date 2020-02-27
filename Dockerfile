@@ -7,8 +7,9 @@ RUN cd /src && go build -o .
 FROM python:alpine
 RUN ["pip3", "install", "youtube-dl"]
 # Test youtube-dl
-RUN youtube-dl --version
+RUN ["youtube-dl", "--version"]
 WORKDIR /app
 COPY priv ./priv
 COPY --from=build-env /src/Jukebox /app/
-ENTRYPOINT ./Jukebox
+ENTRYPOINT ["./Jukebox"]
+CMD []

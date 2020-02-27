@@ -11,12 +11,13 @@ import (
 )
 
 type Jukebox struct {
-	Current   Song              `json:"current"`
-	Queues    map[string][]Song `json:"queues"`
-	Volume    int               `json:"volume"`
-	Usernames []string          `json:"usernames"` // To record insertion order
-	mux       sync.Mutex
-	conn      *mpd.Client
+	CurrentUser string            `json:"current_user"`
+	CurrentSong Song              `json:"current_song"`
+	Queues      map[string][]Song `json:"queues"`
+	Volume      int               `json:"volume"`
+	Usernames   []string          `json:"usernames"` // To record insertion order
+	mux         sync.Mutex
+	conn        *mpd.Client
 }
 
 func NewJukebox(conn *mpd.Client) Jukebox {
@@ -69,7 +70,7 @@ func (juke *Jukebox) addSong(name string, song Song) error {
 		juke.Usernames = append(juke.Usernames, name)
 	}
 	// If nothing playing, play it.
-	if (Song{}) == juke.Current {
+	if (Song{}) == juke.CurrentSong {
 		return juke.cycle()
 	}
 	return nil
@@ -123,10 +124,11 @@ func (juke *Jukebox) CycleSong() error {
 func (juke *Jukebox) cycle() error {
 	// Exists so cycle can be reused
 	if len(juke.Queues) == 0 {
-		juke.Current = Song{}
+		juke.CurrentSong = Song{}
 		return nil
 	}
-	juke.Current = juke.Queues[juke.Usernames[0]][0]
+	juke.CurrentSong = juke.Queues[juke.Usernames[0]][0]
+	juke.CurrentUser = juke.Usernames[0]
 	juke.remove(juke.Usernames[0], 0)
 	if len(juke.Queues) > 1 {
 		juke.Usernames = append(juke.Usernames[1:], juke.Usernames[0])
@@ -135,7 +137,7 @@ func (juke *Jukebox) cycle() error {
 	if err := juke.conn.Clear(); err != nil {
 		return err
 	}
-	if err := juke.conn.Add(juke.Current.URL); err != nil {
+	if err := juke.conn.Add(juke.CurrentSong.URL); err != nil {
 		return err
 	}
 	if err := juke.conn.Play(-1); err != nil {
