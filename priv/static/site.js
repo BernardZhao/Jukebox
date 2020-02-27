@@ -69,7 +69,7 @@ var sock = null
 /** Heartbeat variablee */
 var isAlive = true;
 
-var main_socket_handler = function (event) {song
+var main_socket_handler = function (event) {
 	if (event.data === "ok") {
 		free_songentry();
 	} else if (event.data === "pong") {
@@ -103,7 +103,7 @@ var main_socket_handler = function (event) {song
 			document.getElementById("currentplayer-descr").style.display = "block";
 			document.getElementById("noplaying").style.display = "none";
 			document.getElementById("disconnected").style.display = "none";
-			span_cp.appendChild(document.createTextNode(current["current_user"]));
+			span_cp.appendChild(document.createTextNode(current_user));
 			var div_songdiv = songDiv(current);
 
 			var btn_remove = document.createElement("button");
