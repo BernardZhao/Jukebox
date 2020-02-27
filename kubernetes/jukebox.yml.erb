@@ -35,6 +35,7 @@ spec:
               cpu: 500m
           ports:
             - containerPort: 8080
+          command: ["./Jukebox"]
           args: ["-host", "tv.ocf.berkeley.edu"]
 ---
 apiVersion: extensions/v1beta1
