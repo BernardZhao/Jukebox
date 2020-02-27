@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: bjukebox-service
+  name: jukebox-service
 spec:
   selector:
-    app: bjukebox
+    app: jukebox
   ports:
     - port: 80
       targetPort: 8080
@@ -13,22 +13,22 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bjukebox-deployment
+  name: jukebox-deployment
   labels:
-    app: bjukebox
+    app: jukebox
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bjukebox
+      app: jukebox
   template:
     metadata:
       labels:
-        app: bjukebox
+        app: jukebox
     spec:
       containers:
-        - name: bjukebox
-          image: "docker.ocf.berkeley.edu/bjukebox:<%= version%>"
+        - name: jukebox
+          image: "docker.ocf.berkeley.edu/jukebox:<%= version%>"
           resources:
             limits:
               memory: 256Mi
@@ -43,9 +43,9 @@ metadata:
   name: virtual-host-ingress
 spec:
   rules:
-    - host: bjukebox.ocf.berkeley.edu
+    - host: jukebox.ocf.berkeley.edu
       http:
         paths:
           - backend:
-              serviceName: bjukebox-service
+              serviceName: jukebox-service
               servicePort: 80
