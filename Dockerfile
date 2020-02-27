@@ -6,7 +6,7 @@ RUN cd /src && go build -o .
 # final stage
 FROM python:alpine
 RUN ["pip3", "install", "youtube-dl"]
-# Try to run it so we know it works
+# Test youtube-dl
 RUN youtube-dl --version
 WORKDIR /app
 COPY --from=build-env /src/Jukebox /app/

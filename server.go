@@ -137,13 +137,15 @@ func validateName(name []byte) bool {
 
 func main() {
 	// Command line flags
+	var host string
+	flag.StringVar(&host, "host", "localhost", "Server host ip")
 	var port string
 	flag.StringVar(&port, "port", "8080", "Server port number")
 	var mpdport string
 	flag.StringVar(&mpdport, "mpdport", "6600", "MPD port number")
 	flag.Parse()
 	// MPD Client connection
-	conn, err := mpd.Dial("tcp", "localhost:"+mpdport)
+	conn, err := mpd.Dial("tcp", host+":"+mpdport)
 	if err != nil {
 		log.Fatalln(err)
 	}

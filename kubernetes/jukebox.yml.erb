@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bjukebox-service
+spec:
+  selector:
+    app: bjukebox
+  ports:
+    - port: 80
+      targetPort: 8080
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bjukebox-deployment
+  labels:
+    app: bjukebox
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bjukebox
+  template:
+    metadata:
+      labels:
+        app: bjukebox
+    spec:
+      containers:
+        - name: bjukebox
+          image: "docker.ocf.berkeley.edu/bjukebox:<%= version%>"
+          resources:
+            limits:
+              memory: 256Mi
+              cpu: 500m
+          ports:
+            - containerPort: 8080
+          args: ["tv.ocf.berkeley.edu"]
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: virtual-host-ingress
+spec:
+  rules:
+    - host: bjukebox.ocf.berkeley.edu
+      http:
+        paths:
+          - backend:
+              serviceName: bjukebox-service
+              servicePort: 80
