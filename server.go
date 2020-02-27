@@ -168,7 +168,7 @@ func main() {
 	// Manages state and player
 	jukebox = NewJukebox(conn)
 	// Watcher set up - check when songs start and end
-	w, err := mpd.NewWatcher("tcp", "localhost:"+mpdport, "", "player")
+	w, err := mpd.NewWatcher("tcp", host+":"+mpdport, "", "player")
 	if err != nil {
 		log.Fatalln(err)
 	}
