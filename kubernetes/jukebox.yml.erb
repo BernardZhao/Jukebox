@@ -35,7 +35,7 @@ spec:
               cpu: 500m
           ports:
             - containerPort: 8080
-          args: ["tv.ocf.berkeley.edu"]
+          args: ["-host", "tv.ocf.berkeley.edu"]
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
