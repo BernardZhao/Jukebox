@@ -8,29 +8,49 @@ Aka Bjb 3 (2.0)
 
 ## Usage
 
-Song URLS can be Youtube, Soundcloud, or any website the `youtube-dl` supports.
+Song URLS can be Youtube, Soundcloud, or from any website the `youtube-dl` supports.
 
-`mpd` should be running on the server, and `youtube-dl` should also be installed. Song extraction changes rapidly, so make sure to keep `youtube-dl` updated.
+Easiest way to deploy is:
 
-## Running
-
-```console
-$ mpd # Make sure mpd is running and check what port it is on
-$ sudo youtube-dl -U # Update youtube-dl when possible
-
-$ go run .
-$ go run . -mpdport=6600 -port=8080 # Manually set ports
+```bash
+docker build -t jukebox .
+docker run --rm jukebox {args}
 ```
+
+### Running development locally:
+
+`mpd` should be running locally, and `youtube-dl` should also be installed. Song extraction changes rapidly, so make sure to keep `youtube-dl` updated.
+
+```bash
+mpd # Make sure mpd is running and check what port it is on
+sudo youtube-dl -U # Update youtube-dl when possible
+go run .
+```
+
+## Arguments
+
+| Argument  | Description         |
+| --------- | ------------------- |
+| --host    | Server host ip      |
+| --port    | Server port number  |
+| --mpdhost | MPD host ip         |
+| --mpdport | MPD port number     |
 
 ### Improvements over Bjb 2
 
 * Uses mpd idle to watch instead of polling for song changes
 * Avoids double requesting youtube-dl 
 * Better volume control
+* Ability to pause
 
 ### Todo
 
 Mainly front end improvements are needed:
  - [ ] Volume slider needs styling
- - [ ] Actual error display on frontend
- - [ ] Many more things
+ - [ ] Better error display on frontend
+ - [ ] Adding new features (like pausing) to frontend
+ - [ ] Better queue display - handle more people and be more compact.
+ - [ ] Better mobile viewing
+ - [ ] Other minor things
+    - [ ] Remove from queue button breaks styling with animation
+    - [ ] General cleanup of `site.js`
