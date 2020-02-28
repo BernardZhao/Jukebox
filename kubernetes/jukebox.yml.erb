@@ -35,7 +35,8 @@ spec:
               cpu: 500m
           ports:
             - containerPort: 8080
-          command: ["-mpdhost", "tv.ocf.berkeley.edu", "-host", "0.0.0.0"]
+          command: ["./Jukebox"]
+          args: ["-mpdhost", "tv.ocf.berkeley.edu", "-host", "0.0.0.0"]
 ---
 apiVersion: extensions/v1beta1
 kind: Ingress
