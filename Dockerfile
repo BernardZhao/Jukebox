@@ -11,5 +11,4 @@ RUN ["youtube-dl", "--version"]
 WORKDIR /app
 COPY priv ./priv
 COPY --from=build-env /src/Jukebox /app/
-ENTRYPOINT ["./Jukebox"]
-CMD []
+ENTRYPOINT [ "./Jukebox" ]

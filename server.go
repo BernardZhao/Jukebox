@@ -147,7 +147,7 @@ func main() {
 	flag.StringVar(&mpdport, "mpdport", "6600", "MPD port number")
 	flag.Parse()
 
-	log.Println("Attempting MPD Client connection on " + mpdhost+":"+mpdport)
+	log.Println("Attempting MPD Client connection on " + mpdhost + ":" + mpdport)
 	conn, err := mpd.Dial("tcp", mpdhost+":"+mpdport)
 	if err != nil {
 		log.Fatalln(err)
