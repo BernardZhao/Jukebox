@@ -206,6 +206,8 @@ function wsInit() {
 			localStorage.setItem('bjb_name', name);
 			
 			this.onmessage = main_socket_handler;
+		} else if (event.data === "pong") {
+			isAlive = true;
 		} else {
 			document.getElementById("starttext").style.display = "none";
 			document.getElementById("nameentry").style.display = "block";
