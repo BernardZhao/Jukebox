@@ -163,7 +163,7 @@ func main() {
 	// Keep MPD Client connection alive
 	go func() {
 		for {
-			time.Sleep(30 * time.Second)
+			time.Sleep(5 * time.Second)
 			if err := conn.Ping(); err != nil {
 				log.Println(err)
 			}
