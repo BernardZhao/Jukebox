@@ -83,23 +83,18 @@ func socketHandle(c *websocket.Conn, name []byte) {
 		case "skip":
 			if err := jukebox.SkipSong(); err != nil {
 				log.Printf("Skip error: %+v\n", err)
-				continue
 			}
 		case "volume":
 			volume, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
 				log.Printf("Volume parse error: %+v\n", err)
-				continue
-			}
-			if err := jukebox.SetVolume(volume); err != nil {
+			} else if err := jukebox.SetVolume(volume); err != nil {
 				log.Printf("Set volume error: %+v\n", err)
-				continue
 			}
 		case "remove":
 			songPosition, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
 				log.Printf("Remove parse error: %+v\n", err)
-				continue
 			}
 			jukebox.RemoveSong(string(name), songPosition)
 		case "queue":
@@ -107,12 +102,10 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			err := jukebox.AddSongURL(string(name), songurl)
 			if err != nil {
 				log.Printf("Error adding songurl: %+v\n", err)
-				continue
 			}
-			c.WriteMessage(1, []byte("ok"))
+			c.WriteMessage(mt, []byte("ok"))
 		default:
 			log.Println("Illegal command: ", messageTokens[0])
-			continue
 		}
 		sendState()
 	}
@@ -171,7 +164,8 @@ func main() {
 	}()
 	// Manages state and player
 	jukebox = NewJukebox(conn)
-	log.Println("Attempting MPD Watcher connection")
+
+	log.Println("Attempting MPD Player Watcher connection")
 	w, err := mpd.NewWatcher("tcp", mpdhost+":"+mpdport, "", "player")
 	if err != nil {
 		log.Fatalln(err)
@@ -187,12 +181,31 @@ func main() {
 			switch status["state"] {
 			case "play":
 			case "stop": // When music stops, move onto the next song
+				// Extremely annoying, but mpd won't know a stream URL won't decode correctly
+				// until it after it responded that it played successfully. Therefore, only
+				// here can we handle a broken youtube-dl streamURL.
+				if _, ok := status["error"]; ok {
+					log.Println("Playback error:", status)
+				}
 				if err := jukebox.CycleSong(); err != nil {
 					log.Printf("Cycle song error: %+v\n", err)
 				}
 				sendState()
 			case "pause":
 			}
+		}
+	}()
+	// Log errors.
+	log.Println("Attempting MPD Error Watcher connection")
+	ew, err := mpd.NewWatcher("tcp", mpdhost+":"+mpdport, "")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	log.Println("Successfully watching MPD errors")
+	defer ew.Close()
+	go func() {
+		for err := range ew.Error {
+			log.Println("Error:", err)
 		}
 	}()
 

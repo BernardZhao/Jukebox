@@ -16,7 +16,7 @@ func fetchSong(url string) (Song, error) {
 	// Maybe make this function return a promise or something in the future
 	var songData Song
 	// JSON dump has no overhead, and we get more info that we need that might be useful
-	cmd := exec.Command("youtube-dl", "--no-playlist", "-J", "-f bestaudio/bestvideo", url)
+	cmd := exec.Command("youtube-dl", "--no-playlist", "-J", "-f bestaudio", url)
 	stdOut, err := cmd.StdoutPipe()
 
 	if err != nil {
