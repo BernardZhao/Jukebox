@@ -88,6 +88,7 @@ var main_socket_handler = function (event) {
     var span_currentvol = document.getElementById("currentvol");
 		removeChildren(span_currentvol);
 		span_currentvol.appendChild(document.createTextNode(serverstate["volume"]));
+    document.getElementById("volslider").value = serverstate["volume"]; 
 
 		removeChildren(span_cp);
 		removeChildren(div_cs);
