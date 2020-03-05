@@ -58,13 +58,23 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if validateName(message) {
-			c.WriteMessage(mt, []byte("ok"))
-			defer socketHandle(c, message)
-			return
+		switch messageTokens := strings.SplitN(string(message), " ", 2); messageTokens[0] {
+		case "ping":
+			c.WriteMessage(mt, []byte("pong"))
+			continue
+		case "name":
+			if len(messageTokens) == 2 && validateName([]byte(messageTokens[1])) {
+				c.WriteMessage(mt, []byte("ok"))
+				defer socketHandle(c, []byte(messageTokens[1]))
+				return
+			} else {
+				c.WriteMessage(mt, []byte("error"))
+				continue
+			}
+		default:
+			c.WriteMessage(mt, []byte("error"))
+			continue
 		}
-		c.WriteMessage(mt, []byte("error"))
-		continue
 	}
 }
 
