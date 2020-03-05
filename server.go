@@ -194,8 +194,8 @@ func main() {
 				// Extremely annoying, but mpd won't know a stream URL won't decode correctly
 				// until it after it responded that it played successfully. Therefore, only
 				// here can we handle a broken youtube-dl streamURL.
-				if _, ok := status["error"]; ok {
-					log.Println("Playback error:", status)
+				if err, ok := status["error"]; ok {
+					log.Println("Playback error:", err)
 				}
 				if err := jukebox.CycleSong(); err != nil {
 					log.Printf("Cycle song error: %+v\n", err)
