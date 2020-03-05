@@ -63,7 +63,7 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 			c.WriteMessage(mt, []byte("pong"))
 			continue
 		case "name":
-			if len(messageTokens = 2) && validateName(messageTokens[1]) {
+			if len(messageTokens == 2) && validateName(messageTokens[1]) {
 				c.WriteMessage(mt, []byte("ok"))
 				defer socketHandle(c, messageTokens[1])
 				return
