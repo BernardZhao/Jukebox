@@ -31,7 +31,7 @@ function songDiv(song) {
 	div_image.className = "song-thumb";
 
 	var a_thumb = document.createElement("a");
-	a_thumb.href = song["WebpageURL"];
+	a_thumb.href = song["webpage_url"];
 	a_thumb.target = "_blank";
 
 	var img_thumb = document.createElement("img");
