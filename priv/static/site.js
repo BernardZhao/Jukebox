@@ -243,7 +243,7 @@ function checkIsAlive() {
 }
 
 function submitName(nameToSubmit) {
-	name = "name ".concat(nameToSubmit);
+	name = `name ${nameToSubmit}`;
 	sock.send(name);
 }
 
