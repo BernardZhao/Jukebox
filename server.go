@@ -57,21 +57,21 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 			log.Printf("Closing: %+v\n", err)
 			return
 		}
-		
-		switch messageTokens := strings.SplitAfterN(string(message), " ", 2); messageTokens[0] {
+
+		switch messageTokens := strings.SplitN(string(message), " ", 2); messageTokens[0] {
 		case "ping":
 			c.WriteMessage(mt, []byte("pong"))
 			continue
 		case "name":
-			if len(messageTokens == 2) && validateName(messageTokens[1]) {
+			if len(messageTokens) == 2 && validateName([]byte(messageTokens[1])) {
 				c.WriteMessage(mt, []byte("ok"))
-				defer socketHandle(c, messageTokens[1])
+				defer socketHandle(c, []byte(messageTokens[1]))
 				return
-			} else {	
+			} else {
 				c.WriteMessage(mt, []byte("error"))
-				continue	
+				continue
 			}
-		default: 
+		default:
 			c.WriteMessage(mt, []byte("error"))
 			continue
 		}
