@@ -43,7 +43,7 @@ func (server *Server) addConnection(c *websocket.Conn) {
 func socketinit(w http.ResponseWriter, r *http.Request) {
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println("Websocket upgrade error: ", err)
+		log.Println("Websocket upgrade error:", err)
 	}
 	server.addConnection(c)
 	defer c.Close()
@@ -86,7 +86,7 @@ func socketHandle(c *websocket.Conn, name []byte) {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
 			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				log.Println("Unexpected Close: ", err)
+				log.Println("Unexpected Close:", err)
 			}
 			return
 		}
@@ -96,30 +96,30 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			continue
 		case "skip":
 			if err := jukebox.SkipSong(); err != nil {
-				log.Println("Skip error: ", err)
+				log.Println("Skip error:", err)
 			}
 		case "volume":
 			volume, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println("Volume parse error: ", err)
+				log.Println("Volume parse error:", err)
 			} else if err := jukebox.SetVolume(volume); err != nil {
-				log.Println("Set volume error: ", err)
+				log.Println("Set volume error:", err)
 			}
 		case "remove":
 			songPosition, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println("Remove parse error: ", err)
+				log.Println("Remove parse error:", err)
 			}
 			jukebox.RemoveSong(string(name), songPosition)
 		case "queue":
 			songurl := messageTokens[1]
 			err := jukebox.AddSongURL(string(name), songurl)
 			if err != nil {
-				log.Println("Error adding songurl: ", err)
+				log.Println("Error adding songurl:", err)
 			}
 			c.WriteMessage(mt, []byte("ok"))
 		default:
-			log.Println("Illegal command: ", messageTokens[0])
+			log.Println("Illegal command:", messageTokens[0])
 		}
 		sendState()
 	}
@@ -172,7 +172,7 @@ func main() {
 		for {
 			time.Sleep(5 * time.Second)
 			if err := conn.Ping(); err != nil {
-				log.Println("Ping error: ", err)
+				log.Println("Ping error:", err)
 			}
 		}
 	}()
@@ -190,7 +190,7 @@ func main() {
 		for range w.Event {
 			status, err := conn.Status()
 			if err != nil {
-				log.Println("Status fetch error: ", err)
+				log.Println("Status fetch error:", err)
 			}
 			switch status["state"] {
 			case "play":
@@ -199,10 +199,10 @@ func main() {
 				// until it after it responded that it played successfully. Therefore, only
 				// here can we handle a broken youtube-dl streamURL.
 				if err, ok := status["error"]; ok {
-					log.Println("Playback error: ", err)
+					log.Println("Playback error:", err)
 				}
 				if err := jukebox.CycleSong(); err != nil {
-					log.Println("Cycle song error: ", err)
+					log.Println("Cycle song error:", err)
 				}
 				sendState()
 			case "pause":
@@ -219,7 +219,7 @@ func main() {
 	defer ew.Close()
 	go func() {
 		for err := range ew.Error {
-			log.Println("MPD Internal Error: ", err)
+			log.Println("MPD Internal Error:", err)
 		}
 	}()
 
