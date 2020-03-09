@@ -5,6 +5,7 @@ import (
 	"os/exec"
 )
 
+// Song : Song information fetched from youtube-dl. More fields exist in the JSON response, but this is what we need.
 type Song struct {
 	Title      string `json:"title"`
 	URL        string `json:"url"`
@@ -15,7 +16,7 @@ type Song struct {
 func fetchSong(url string) (Song, error) {
 	// Maybe make this function return a promise or something in the future
 	var songData Song
-	// JSON dump has no overhead, and we get more info that we need that might be useful
+	// JSON dump has no extra overhead, and we get more info that we need that might be useful
 	cmd := exec.Command("youtube-dl", "--no-playlist", "-J", "--youtube-skip-dash-manifest", "-f bestaudio", url)
 	stdOut, err := cmd.StdoutPipe()
 
