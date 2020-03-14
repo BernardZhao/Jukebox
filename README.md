@@ -10,13 +10,6 @@ Aka Bjb 3 (2.0)
 
 Song URLS can be Youtube, Soundcloud, or from any website the `youtube-dl` supports.
 
-Easiest way to deploy is:
-
-```bash
-docker build -t jukebox .
-docker run --rm jukebox {args}
-```
-
 ### Running development locally:
 
 `mpd` should be running locally, and `youtube-dl` should also be installed. Song extraction changes rapidly, so make sure to keep `youtube-dl` updated.
@@ -41,7 +34,7 @@ go run .
 * Uses mpd idle to watch instead of polling for song changes
 * Avoids double requesting youtube-dl 
 * Better volume control
-* Ability to pause
+* Ability to pause / resume
 
 ### Todo
 

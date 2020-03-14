@@ -10,6 +10,7 @@ import (
 	"github.com/fhs/gompd/v2/mpd"
 )
 
+// Jukebox : Jukebox state
 type Jukebox struct {
 	CurrentUser string            `json:"current_user"`
 	CurrentSong Song              `json:"current_song"`
@@ -20,6 +21,7 @@ type Jukebox struct {
 	conn        *mpd.Client
 }
 
+// NewJukebox : Generates a new Jukebox given a mpd client connection
 func NewJukebox(conn *mpd.Client) Jukebox {
 	var volume int
 	var err error
@@ -43,6 +45,7 @@ func NewJukebox(conn *mpd.Client) Jukebox {
 	return Jukebox{conn: conn, Queues: make(map[string][]Song), Volume: volume}
 }
 
+// SetVolume : Sets mpd volume
 func (juke *Jukebox) SetVolume(value int) error {
 	if value > 100 || value < 0 {
 		return errors.New("Invalid volume")
@@ -53,6 +56,7 @@ func (juke *Jukebox) SetVolume(value int) error {
 	return juke.conn.SetVolume(value)
 }
 
+// GetState : Returns JSON of Jukebox state
 func (juke *Jukebox) GetState() string {
 	juke.mux.Lock()
 	defer juke.mux.Unlock()
@@ -69,13 +73,14 @@ func (juke *Jukebox) addSong(name string, song Song) error {
 		juke.Queues[name] = []Song{song}
 		juke.Usernames = append(juke.Usernames, name)
 	}
-	// If nothing playing, play it.
+	// If nothing playing, play it
 	if (Song{}) == juke.CurrentSong {
 		return juke.cycle()
 	}
 	return nil
 }
 
+// AddSongURL : Given a URL, add it to the Jukebox
 func (juke *Jukebox) AddSongURL(name string, songURL string) error {
 	song, err := fetchSong(songURL)
 	if err != nil {
@@ -84,6 +89,7 @@ func (juke *Jukebox) AddSongURL(name string, songURL string) error {
 	return juke.addSong(name, song)
 }
 
+// RemoveSong : Remove a song from a queue
 func (juke *Jukebox) RemoveSong(name string, position int) {
 	juke.mux.Lock()
 	defer juke.mux.Unlock()
@@ -108,6 +114,7 @@ func (juke *Jukebox) remove(name string, position int) {
 	}
 }
 
+// SkipSong : Skip the currently playing song
 func (juke *Jukebox) SkipSong() error {
 	// Will trigger cycle song watcher
 	juke.mux.Lock()
@@ -115,6 +122,7 @@ func (juke *Jukebox) SkipSong() error {
 	return juke.conn.Clear()
 }
 
+// CycleSong : Play the next song on the queue
 func (juke *Jukebox) CycleSong() error {
 	juke.mux.Lock()
 	defer juke.mux.Unlock()
@@ -146,10 +154,12 @@ func (juke *Jukebox) cycle() error {
 	return nil
 }
 
+// Pause : Pause mpd playback
 func (juke *Jukebox) Pause() error {
 	return juke.conn.Pause(true)
 }
 
+// Resume : Resume mpd playback
 func (juke *Jukebox) Resume() error {
 	return juke.conn.Pause(false)
 }
