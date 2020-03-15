@@ -3,7 +3,7 @@ DOCKER_TAG = docker-push.ocf.berkeley.edu/jukebox:$(DOCKER_REVISION)
 
 .PHONY: test
 test:
-	go get ./...
+	go get -u ./...
 	go test
 
 .PHONY: cook-image

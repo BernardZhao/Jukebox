@@ -9,6 +9,6 @@ RUN ["pip3", "install", "youtube-dl"]
 # Test youtube-dl
 RUN ["youtube-dl", "--version"]
 WORKDIR /app
-COPY priv ./priv
+COPY dist ./dist
 COPY --from=build-env /src/Jukebox /app/
 ENTRYPOINT [ "./Jukebox" ]

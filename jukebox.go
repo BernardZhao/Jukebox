@@ -12,8 +12,8 @@ import (
 
 // Jukebox : Jukebox state
 type Jukebox struct {
-	CurrentUser string            `json:"current_user"`
-	CurrentSong Song              `json:"current_song"`
+	CurrentUser string            `json:"currentUser"`
+	CurrentSong Song              `json:"currentSong"`
 	Queues      map[string][]Song `json:"queues"`
 	Volume      int               `json:"volume"`
 	Usernames   []string          `json:"usernames"` // To record insertion order

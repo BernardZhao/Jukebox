@@ -47,17 +47,15 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 	}
 	server.addConnection(c)
 	defer c.Close()
-	c.SetCloseHandler(func(code int, text string) error {
-		server.removeConnection(c)
-		return nil
-	})
 
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				log.Printf("error: %v, user-agent: %v", err, r.Header.Get("User-Agent"))
+			if websocket.IsCloseError(err) {
+				server.removeConnection(c)
+				return
 			}
+			log.Println("Message error:", err)
 			return
 		}
 
@@ -71,10 +69,10 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 				defer socketHandle(c, []byte(messageTokens[1]))
 				return
 			}
-			c.WriteMessage(mt, []byte("error"))
+			c.WriteMessage(mt, []byte("Invalid name."))
 			continue
 		default:
-			c.WriteMessage(mt, []byte("error"))
+			c.WriteMessage(mt, []byte("Unknown message."))
 			continue
 		}
 	}
@@ -85,9 +83,11 @@ func socketHandle(c *websocket.Conn, name []byte) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway) {
-				log.Println("Unexpected Close:", err)
+			if websocket.IsCloseError(err) {
+				server.removeConnection(c)
+				return
 			}
+			log.Println("Message error:", err)
 			return
 		}
 		switch messageTokens := strings.Split(string(message), " "); messageTokens[0] {
@@ -120,6 +120,7 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			c.WriteMessage(mt, []byte("ok"))
 		default:
 			log.Println("Illegal command:", messageTokens[0])
+			c.WriteMessage(mt, []byte("error Illegal command"))
 		}
 		sendState()
 	}
@@ -228,7 +229,7 @@ func main() {
 	// Playlist test https://www.youtube.com/watch?v=W3J9-OvxNpo&list=PLmIf0JO7SvbKxGuse9T19m_mHBm4oNG7y
 
 	server = initServer()
-	fs := http.FileServer(http.Dir("./priv"))
+	fs := http.FileServer(http.Dir("./dist"))
 	http.Handle("/", fs)
 	http.HandleFunc("/ws", socketinit)
 	log.Println("Starting up server on " + host + ":" + port)
