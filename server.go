@@ -120,7 +120,7 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			c.WriteMessage(mt, []byte("ok"))
 		default:
 			log.Println("Illegal command:", messageTokens[0])
-			c.WriteMessage(mt, []byte("error Illegal command"))
+			c.WriteMessage(mt, []byte("Illegal command."))
 		}
 		sendState()
 	}
