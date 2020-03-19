@@ -50,7 +50,6 @@ h2 {
 }
 
 #nameentry {
-	display: none;
 	position: absolute;
 	top: 20vh;
 	left: 20vw;
@@ -121,10 +120,6 @@ button:hover {
 
 main {
 	margin: 0 18vw;
-}
-
-#interface {
-	display: none;
 }
 
 .song {
@@ -258,11 +253,6 @@ main {
 	padding: 10px 20px;
 }
 
-#tab-settings {
-	/* Hide by default. */
-	display: none;
-}
-
 #tab-queuesong label {
 	display: inline-block;
 	margin-top: 10px;
@@ -330,4 +320,4 @@ main {
 	padding: 5px 10px;
 }
 
-
+[hidden] { display: none; }

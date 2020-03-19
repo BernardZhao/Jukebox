@@ -1,73 +1,76 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<title>Jukebox</title>
+  <title>Jukebox</title>
 
-<link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,600|Fascinate+Inline|Righteous' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="static/site.css" type="text/css" media="screen" />
+  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,600|Fascinate+Inline|Righteous'
+    rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="static/site.css" type="text/css" media="screen" />
 
-<script type="text/javascript" src="static/site.js"></script>
+  <script type="text/javascript" src="static/site.js"></script>
 </head>
 
 <body>
-	<header>
-		<h1 id="heading">Jukebox</h1>
-		<div id="starttext">Connecting to WebSocket...</div>
-		<div id="lostconn" style="display:none">Lost connection to WebSocket...retrying</div>
-	</header>
+  <header>
+    <h1 id="heading">Jukebox</h1>
+    <div id="starttext">Connecting to WebSocket...</div>
+    <div id="lostconn" hidden>Lost connection to WebSocket...retrying</div>
+  </header>
 
-	<div id="nameentry">
-		<h1>Welcome to Jukebox!</h1>
-		<label>Enter your name:</label>
-		<input id="input-name" type="text" autocomplete="username"/><br/>
-		<div>
-			<button id="b-entername">Go</button>
-		</div>
-		
-		<div id="nameerror" class="errorbox"></div>
-	</div>
-	
-	<main id="interface">
-		<div id="nowplaying">
-			<div id="currentsong"></div>
-			<div id="currentplayer-descr">
-				<img id="currentplayer-disc" src="static/disc.svg" width="24"/>
-				<span id="currentplayer-msg">
-					<span id="currentplayer" class="name"></span> is currently playing...
-				</span>
-			</div>
-		</div>
-		<div id="noplaying">
-			<div>Nothing is currently playing!</div>
-		</div>
-		<div id="tab-menu">
-			<nav>
-				<div class="menu-item active" id="m-queue">Queue Song</div>
-				<div class="menu-item" id="m-settings">Settings</div>
-			</nav>
+  <div id="nameentry">
+    <h1>Welcome to Jukebox!</h1>
+    <label>Enter your name:</label>
+    <input id="input-name" type="text" autocomplete="username" /><br />
+    <div>
+      <button id="b-entername">Go</button>
+    </div>
+    <div id="nameerror" class="errorbox"></div>
+  </div>
 
-			<div id="tab-queuesong">
-				<input id="input-songurl" type="text" autocomplete="url" placeholder="Place a song url here..."/>
-				<button id="b-songurl">Queue</button>
-			</div>
+  <main id="interface" hidden>
+    <div id="nowplaying">
+      <div id="currentsong"></div>
+      <div id="currentplayer-descr">
+        <img id="currentplayer-disc" src="static/disc.svg" width="24" />
+        <span id="currentplayer-msg">
+          <span id="currentplayer" class="name"></span> is currently playing...
+        </span>
+      </div>
+    </div>
+    <div id="noplaying">
+      <div>Nothing is currently playing!</div>
+    </div>
+    <div id="tab-menu">
+      <nav>
+        <div class="menu-item active" id="m-queue">Queue Song</div>
+        <div class="menu-item" id="m-settings">Settings</div>
+      </nav>
 
-			<div id="tab-settings">
-				<div id="namedisplaydiv">Your name is <span id="displayname" class="name"></span>. <button id="b-changename">Change name</button></div>
-				<span id="songurlerror" class="errorbox">There was an error!</span>
-				<div id="volumecontrols">
-					Current volume:&nbsp;
-					<span id="currentvol">?</span>
-					<input id="volslider" type="range" min="0" max="100">
-				</div>
-			</div>
-		</div>
-		<div id="queues">
-			<h2>Queue</h2>
-			<div id="queuelist"></div>
-		</div>
-	</main>
-	
+      <div id="tab-queuesong">
+        <input id="input-songurl" type="text" autocomplete="url" placeholder="Place a song url here..." />
+        <button id="b-songurl">Queue</button>
+        <span id="songurlerror" class="errorbox">There was an error!</span>
+      </div>
+
+      <div id="tab-settings" hidden>
+        <div id="namedisplaydiv">Your name is <span id="displayname" class="name"></span>. <button
+            id="b-changename">Change name</button></div>
+        <div id="volumecontrols">
+          Current volume:&nbsp;
+          <span id="currentvol">?</span>
+          <input id="volslider" type="range" min="0" max="100">
+        </div>
+      </div>
+    </div>
+    <div id="queues">
+      <h2>Queue</h2>
+      <div id="queuelist"></div>
+    </div>
+  </main>
+
 </body>
+
 </html>

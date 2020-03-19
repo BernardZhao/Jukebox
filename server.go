@@ -46,16 +46,16 @@ func socketinit(w http.ResponseWriter, r *http.Request) {
 		log.Println("Websocket upgrade error:", err)
 	}
 	server.addConnection(c)
-	defer c.Close()
-
+	defer func() {
+		server.removeConnection(c)
+		c.Close()
+	}()
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			if websocket.IsCloseError(err) {
-				server.removeConnection(c)
-				return
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("error: %v", err)
 			}
-			log.Println("Message error:", err)
 			return
 		}
 
@@ -83,11 +83,9 @@ func socketHandle(c *websocket.Conn, name []byte) {
 	for {
 		mt, message, err := c.ReadMessage()
 		if err != nil {
-			if websocket.IsCloseError(err) {
-				server.removeConnection(c)
-				return
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Printf("error: %v", err)
 			}
-			log.Println("Message error:", err)
 			return
 		}
 		switch messageTokens := strings.Split(string(message), " "); messageTokens[0] {
