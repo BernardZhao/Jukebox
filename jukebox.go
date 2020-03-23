@@ -39,7 +39,7 @@ func NewJukebox(conn *mpd.Client) Jukebox {
 	}
 
 	if err != nil {
-		log.Println(err)
+		log.Fatalln(err)
 	}
 
 	return Jukebox{conn: conn, Queues: make(map[string][]Song), Volume: volume}
