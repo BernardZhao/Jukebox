@@ -43,7 +43,7 @@ func (server *Server) addConnection(c *websocket.Conn) {
 // Sends error back.
 func handleError(c *websocket.Conn, errText string, err error) {
 	log.Println(errText, err)
-	c.WriteMessage(1, []byte("error "+errText+" "+err.Error()))
+	c.WriteMessage(websocket.TextMessage, []byte("error "+errText+" "+err.Error()))
 }
 
 func socketinit(w http.ResponseWriter, r *http.Request) {
