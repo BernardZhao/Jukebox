@@ -2,9 +2,11 @@
 
 A web platform to collectively queue songs to play.
 
-Built on top of the current [Bjb1](https://github.com/ocf/BJukebox), dead [Bjb2](https://github.com/dkess/BJukebox2/blob/master/bjb.py), and [Ryan's](https://github.com/NotRyan) work on a similar [Bjb3](https://github.com/NotRyan/BJukebox3)
+![screenshot](screenshot.jpg)
 
-Aka Bjb 3 (2.0)
+Built on top of the old [Bjb1](https://github.com/ocf/BJukebox), the dead [Bjb2](https://github.com/dkess/BJukebox2/blob/master/bjb.py), and [Ryan's](https://github.com/NotRyan) work on a similar [Bjb3](https://github.com/NotRyan/BJukebox3)
+
+Thus, this is aka Bjb 3 (2.0)
 
 ## Usage
 
