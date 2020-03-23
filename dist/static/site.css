@@ -1,323 +1,366 @@
-html, body {
-	width: 100%;
-	height: 100%;
-	padding: 0;
-	margin: 0;
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-	font-family: 'Source Sans Pro', sans-serif;
-	background: url('replacable.jpg') no-repeat center #000;
-	background-size: auto 125%;
-	color: #fff;
+  font-family: "Source Sans Pro", sans-serif;
+  color: #fff;
 }
 
 header {
-	position: fixed;
-	width: 100%;
-	cursor: default;
-	text-align: center;
+  text-align: center;
 }
 
 #heading {
-	font-family: 'Fascinate Inline', monospace;
-	font-size: 3em;
-	-moz-user-select: none;
-	-webkit-user-select: none;
-	user-select: none;
-	margin-bottom: 0;
-
-	/* IDEA: Maybe have the heading pop up on click? */
+  font-family: "Fascinate Inline", monospace;
+  font-size: 3em;
+  user-select: none;
+  margin: 0;
+  padding: 30px;
 }
 
-main {
-	padding-top: 8em;
+h1,
+h2 {
+  text-shadow: 2px 2px 4px #000000;
 }
 
 h2 {
-	font-weight: 600;
+  font-weight: 600;
 }
 
 @keyframes pop-in {
-	from {
-		transform: translateY(-20px);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0px);
-		opacity: 1;
-	}
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0px);
+    opacity: 1;
+  }
 }
 
 #nameentry {
-	position: absolute;
-	top: 20vh;
-	left: 20vw;
-	background: #111;
-	padding: 15px 30px;
-	border-radius: 6px;
-	box-sizing: border-box;
-	width: 60vw;
-	animation: 250ms pop-in ease;
+  position: absolute;
+  top: 20vh;
+  left: 20vw;
+  background: #111;
+  padding: 15px 30px;
+  border-radius: 5px;
+  box-sizing: border-box;
+  width: 60vw;
+  animation: 250ms pop-in ease;
 }
 
-button, input {
-	font-family: 'Source Sans Pro', sans-serif;
+button,
+input {
+  font-family: "Source Sans Pro", sans-serif;
 }
 
-input[type=text] {
-	font-family: monospace;
-	background: #1e1e1e;
-	color: #fff;
-	border-radius: 4px;
-	border: 2px solid transparent;
-	padding: 5px 8px;
-	outline: none;
-	box-sizing: border-box;
-	transition: 40ms ease-in-out border-color;
+input[type="text"] {
+  font-family: monospace;
+  background: #1e1e1e;
+  color: #fff;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  padding: 5px 8px;
+  outline: none;
+  box-sizing: border-box;
+  transition: 40ms ease-in-out border-color;
 }
 
 input:focus {
-	background: #222;
-	border: 2px solid #a50bca;
+  background: #222;
+  border: 2px solid #a50bca;
 }
 
 #nameentry input {
-	font-size: 28px;
-	width: 100%;
-	padding: 10px 15px;
-	margin: 10px 0;
+  font-size: 28px;
+  width: 100%;
+  padding: 10px 15px;
+  margin: 10px 0;
 }
 
 button {
-	background: transparent;
-	color: #888;
-	font-size: 16px;
-	font-weight: 600;
-	margin: 8px 0;
-	padding: 10px;
-	border: none;
-	cursor: pointer;
-	transition: 120ms ease-in-out;
-	transition-property: background-color padding color;
+  background: transparent;
+  color: #888;
+  font-size: 16px;
+  font-weight: 600;
+  margin: 8px 0;
+  padding: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 120ms ease-in-out;
+  transition-property: background-color padding color;
 }
 
 button:after {
-	content: '\2192';
-	transition: 120ms ease-in-out;
-	margin-left: 6px;
+  content: "\2192";
+  transition: 120ms ease-in-out;
+  margin-left: 6px;
 }
 
 button:hover:after {
-	margin-left: 10px;
+  margin-left: 10px;
 }
 
 button:hover {
-	background: #a50bca;
-	color: #fff;
-	padding: 10px 20px;
+  background: #a50bca;
+  color: #fff;
+  padding: 10px 20px;
 }
 
 main {
-	margin: 0 18vw;
+  margin: 0 16vw;
 }
 
 .song {
-	display: flex;
-	width: 300px;
-	/* height: 95px; */
-	border: 1px solid gray;
-	overflow: auto;
-	margin-bottom: 5px;
+  display: flex;
+  height: 90px;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 5px;
+  overflow: hidden;
+  align-items: center;
 }
 
 .name {
-	font-family: 'Righteous', monospace;
+  text-shadow: 2px 2px 4px #000000;
+  font-family: "Righteous", monospace;
 }
 
 #nowplaying {
-	cursor: default;
+  cursor: default;
 }
 
 #nowplaying .song {
-	width: 100%;
-	overflow: hidden;
-	border-radius: 8px;
-	border: none;
-	background: #111;
-	height: 90px;
-	align-items: center;
+  width: 100%;
+  overflow: hidden;
+  border: none;
+  background: #111;
+  height: 90px;
+  align-items: center;
 }
 
 #nowplaying .song > .songtitle {
-	font-size: 1.2em;
-	font-family: 'Righteous', monospace;
-}
-
-#nowplaying .song-thumb {
-	margin-right: 1em;
+  font-size: 1.2em;
+  font-family: "Righteous", monospace;
+  max-width: none;
 }
 
 #nowplaying button {
-	align-self: center;
+  align-self: center;
 }
 
 @keyframes push-desc-out {
-	from {
-		transform: translateX(0px);
-	}
-	100% {
-		transform: translateX(30px);
-	}
+  from {
+    transform: translateX(0px);
+  }
+  100% {
+    transform: translateX(30px);
+  }
+}
+
+#currentsong {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 #currentplayer-descr {
-	font-family: 'Righteous', monospace;
-	animation: 250ms pop-in ease, 400ms push-desc-out ease 250ms;
-	padding: 10px 0;
-	position: relative;
-	transform: translateX(30px);
+  font-family: "Righteous", monospace;
+  animation: 250ms pop-in ease, 400ms push-desc-out ease 250ms;
+  padding: 10px 0;
+  position: relative;
+  transform: translateX(30px);
+  text-shadow: 2px 2px 4px #000000;
 }
 
 @keyframes rotating-disc {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes fade-in {
-	from, 40% { opacity: 0; }
-	to { opacity: 1; }
+  from,
+  40% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* The disc animation */
 #currentplayer-disc {
-	position: absolute;
-	left: -30px;
-	animation: rotating-disc 3s linear infinite, fade-in 600ms ease;
+  position: absolute;
+  left: -30px;
+  animation: rotating-disc 3s linear infinite, fade-in 600ms ease;
 }
 
-.song-thumb {
-	align-self: center;
-	margin-right: 0.5em;
+.song img {
+  width: auto;
+  max-width: 120px;
+  height: 90px;
+  min-width: 90px;
+  opacity: 0.95;
+  float: left;
 }
 
-.song-thumb > img {
-	height: auto;
-	width: auto;
-	max-width: 120px;
-	max-height: 90px;
-	min-width: 90px;
-	min-height: 50px;
+.song img:hover {
+  opacity: 1;
 }
 
 .songtitle {
-	flex: 1;
-	align-self: center;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  align-self: center;
+  align-items: center;
+  margin: 10px;
+  max-width: 240px;
+}
+
+.songList > * {
+  margin: 5px 0;
 }
 
 /* Tab Menu */
 
 #tab-menu {
-	background: #111;
-	margin-top: 20px;
+  background: #111;
+  margin-top: 10px;
+  border-radius: 5px;
 }
 
 #tab-menu nav {
-	display: flex;
+  display: flex;
+  border-radius: 5px;
 }
 
 .menu-item {
-	display: inline-block;
-	font-weight: 600;
-	padding: 10px 20px;
-	cursor: pointer;
-	opacity: 0.6;
-	border-bottom: 4px solid transparent;
-	transition: 150ms ease;
+  display: inline-block;
+  font-weight: 600;
+  padding: 10px 20px;
+  cursor: pointer;
+  opacity: 0.6;
+  border-bottom: 4px solid transparent;
+  transition: 150ms ease;
 }
 
-.menu-item:hover, .menu-item.active {
-	opacity: 1;
+.menu-item:hover,
+.menu-item.active {
+  opacity: 1;
 }
 
 .menu-item.active {
-	border-color: #a50bca;
+  border-color: #a50bca;
 }
 
 #tab-queuesong,
 #tab-settings {
-	padding: 10px 20px;
+  padding: 10px 20px;
 }
 
 #tab-queuesong label {
-	display: inline-block;
-	margin-top: 10px;
+  display: inline-block;
+  margin-top: 10px;
 }
 
 #input-songurl {
-	display: block;
-	padding: 8px 15px;
-	margin-top: 15px;
-	width: 100%;
+  display: block;
+  padding: 8px 15px;
+  margin-top: 15px;
+  width: 100%;
 }
 
 #b-changename {
-	margin-left: 0.5em;
+  margin: 0.5em;
 }
 
 #volumecontrols {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
-#b-voldown, #b-volup {
-	margin-right: 1em;
+#volslider {
+  margin: 0.5em;
 }
 
-#noplaying, #disconnected {
-	display: none;
-	font-weight: bold;
+#noplaying,
+#disconnected {
+  display: none;
+  font-weight: bold;
 }
 
 #queuelist {
-	display: flex;
-	flex-wrap: wrap;
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .queue {
-	margin-right: 10px;
-	margin-bottom: 15px;
+  flex: 1 0 auto;
+  margin: 5px;
+  max-width: 100%;
 }
 
 .errorbox {
-	color: #d93434;
-	display: none;
-	cursor: pointer;
+  color: #d93434;
+  display: none;
+  cursor: pointer;
 }
 
 .b-remove {
-	border: 0;
-	color: rgba(255, 255, 255, 0.6);
-	font-size: 16px;
-	background: transparent;
-	padding: 5px;
-	text-decoration: none;
-	margin: 0.5em;
-	align-self: flex-start;
+  border: 0;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 16px;
+  background: transparent;
+  padding: 5px;
+  text-decoration: none;
+  margin: 0.5em;
+  align-self: center;
+  margin-left: auto;
 }
+
+#nowplaying .b-remove:before {
+  content: "Skip";
+}
+
 .b-remove:before {
-	content: "Skip";
+  content: "Remove";
 }
 
 .b-remove:hover {
-	background: #d93434;
-	color: #ffffff;
-	text-decoration: none;
-	padding: 5px 10px;
+  background: #d93434;
+  color: #ffffff;
+  text-decoration: none;
+  padding: 5px 10px;
 }
 
-[hidden] { display: none; }
+[hidden] {
+  display: none;
+}
+
+.fullscreen-bg {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.fullscreen-bg__video {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  transform: translate(-50%, -50%);
+}

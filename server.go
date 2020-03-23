@@ -40,6 +40,12 @@ func (server *Server) addConnection(c *websocket.Conn) {
 	server.mux.Unlock()
 }
 
+// Sends error back.
+func handleError(c *websocket.Conn, errText string, err error) {
+	log.Println(errText, err)
+	c.WriteMessage(1, []byte("error "+errText+" "+err.Error()))
+}
+
 func socketinit(w http.ResponseWriter, r *http.Request) {
 	c, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
@@ -94,31 +100,42 @@ func socketHandle(c *websocket.Conn, name []byte) {
 			continue
 		case "skip":
 			if err := jukebox.SkipSong(); err != nil {
-				log.Println("Skip error:", err)
+				handleError(c, "Skip error:", err)
 			}
 		case "volume":
 			volume, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println("Volume parse error:", err)
+				handleError(c, "Error parsing volume:", err)
 			} else if err := jukebox.SetVolume(volume); err != nil {
-				log.Println("Set volume error:", err)
+				handleError(c, "Error setting volume:", err)
 			}
 		case "remove":
 			songPosition, err := strconv.Atoi(messageTokens[1])
 			if err != nil {
-				log.Println("Remove parse error:", err)
+				handleError(c, "Error parsing remove:", err)
 			}
 			jukebox.RemoveSong(string(name), songPosition)
 		case "queue":
 			songurl := messageTokens[1]
 			err := jukebox.AddSongURL(string(name), songurl)
 			if err != nil {
-				log.Println("Error adding songurl:", err)
+				handleError(c, "Error adding song:", err)
+			} else {
+				c.WriteMessage(mt, []byte("ok"))
 			}
-			c.WriteMessage(mt, []byte("ok"))
+		case "pause":
+			err := jukebox.Pause()
+			if err != nil {
+				handleError(c, "Error pausing:", err)
+			}
+		case "resume":
+			err := jukebox.Resume()
+			if err != nil {
+				handleError(c, "Error resuming:", err)
+			}
 		default:
 			log.Println("Illegal command:", messageTokens[0])
-			c.WriteMessage(mt, []byte("Illegal command."))
+			c.WriteMessage(mt, []byte("Illegal command: "+messageTokens[0]))
 		}
 		sendState()
 	}

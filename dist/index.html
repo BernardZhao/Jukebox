@@ -1,76 +1,93 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=.75, maximum-scale=.75, minimum-scale=.75, minimal-ui"
+    />
+    <title>Jukebox</title>
 
-<head>
-  <meta charset="UTF-8">
+    <link
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,600|Fascinate+Inline|Righteous"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="static/site.css"
+      type="text/css"
+      media="screen"
+    />
 
-  <title>Jukebox</title>
+    <script type="text/javascript" src="static/site.js"></script>
+  </head>
 
-  <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,600|Fascinate+Inline|Righteous'
-    rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="static/site.css" type="text/css" media="screen" />
-
-  <script type="text/javascript" src="static/site.js"></script>
-</head>
-
-<body>
-  <header>
-    <h1 id="heading">Jukebox</h1>
-    <div id="starttext">Connecting to WebSocket...</div>
-    <div id="lostconn" hidden>Lost connection to WebSocket...retrying</div>
-  </header>
-
-  <div id="nameentry">
-    <h1>Welcome to Jukebox!</h1>
-    <label>Enter your name:</label>
-    <input id="input-name" type="text" autocomplete="username" /><br />
-    <div>
-      <button id="b-entername">Go</button>
+  <body>
+    <div class="fullscreen-bg">
+      <video loop muted preload="none" poster="static/thumbnail.jpg" class="fullscreen-bg__video" id="video">
+        <source src="static/background.mp4" type="video/mp4" />
+      </video>
     </div>
-    <div id="nameerror" class="errorbox"></div>
-  </div>
 
-  <main id="interface" hidden>
-    <div id="nowplaying">
-      <div id="currentsong"></div>
-      <div id="currentplayer-descr">
-        <img id="currentplayer-disc" src="static/disc.svg" width="24" />
-        <span id="currentplayer-msg">
-          <span id="currentplayer" class="name"></span> is currently playing...
-        </span>
+    <header>
+      <h1 id="heading">Jukebox</h1>
+      <div id="starttext">Connecting to WebSocket...</div>
+      <div id="lostconn" hidden>Lost connection to WebSocket...retrying</div>
+    </header>
+
+    <div id="nameentry">
+      <h1>Welcome to Jukebox!</h1>
+      <label>Enter your name:</label>
+      <input id="input-name" type="text" autocomplete="username" /><br />
+      <div>
+        <button id="b-entername">Go</button>
       </div>
+      <div id="nameerror" class="errorbox"></div>
     </div>
-    <div id="noplaying">
-      <div>Nothing is currently playing!</div>
-    </div>
-    <div id="tab-menu">
-      <nav>
-        <div class="menu-item active" id="m-queue">Queue Song</div>
-        <div class="menu-item" id="m-settings">Settings</div>
-      </nav>
 
-      <div id="tab-queuesong">
-        <input id="input-songurl" type="text" autocomplete="url" placeholder="Place a song url here..." />
-        <button id="b-songurl">Queue</button>
-        <span id="songurlerror" class="errorbox">There was an error!</span>
-      </div>
-
-      <div id="tab-settings" hidden>
-        <div id="namedisplaydiv">Your name is <span id="displayname" class="name"></span>. <button
-            id="b-changename">Change name</button></div>
-        <div id="volumecontrols">
-          Current volume:&nbsp;
-          <span id="currentvol">?</span>
-          <input id="volslider" type="range" min="0" max="100">
+    <main id="interface" hidden>
+      <div id="nowplaying">
+        <div id="currentsong"></div>
+        <div id="currentplayer-descr">
+          <img id="currentplayer-disc" src="static/disc.svg" width="24" />
+          <span id="currentplayer-msg">
+            <span id="currentplayer" class="name"></span> is currently
+            playing...
+          </span>
         </div>
       </div>
-    </div>
-    <div id="queues">
-      <h2>Queue</h2>
-      <div id="queuelist"></div>
-    </div>
-  </main>
+      <div id="noplaying">
+        <div>Nothing is currently playing!</div>
+      </div>
+      <div id="tab-menu">
+        <nav>
+          <div class="menu-item active" id="m-queue">Queue Song</div>
+          <div class="menu-item" id="m-settings">Settings</div>
+        </nav>
 
-</body>
+        <div id="tab-queuesong">
+          <input id="input-songurl" type="text" autocomplete="url" placeholder="Place a song url here..." />
+          <button id="b-songurl">Queue</button>
+          <span id="error" class="errorbox">There was an error!</span>
+        </div>
 
+        <div id="tab-settings" hidden>
+          <div id="namedisplaydiv">
+            Your name is <span id="displayname" class="name"></span>.
+            <button id="b-changename">Change name</button>
+          </div>
+          <div id="volumecontrols">
+            Current volume:&nbsp;
+            <span id="currentvol">?</span>
+            <input id="volslider" type="range" min="0" max="100" />
+          </div>
+        </div>
+      </div>
+      <div id="queues">
+        <h2>Queue</h2>
+        <div id="queuelist"></div>
+      </div>
+    </main>
+  </body>
 </html>

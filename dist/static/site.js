@@ -10,10 +10,8 @@ let isAlive = true;
 function createSong(song, onclick, username = null) {
   return `
     <div class="song">
-      <a target="_blank" href=${song.webpage_url}>
-        <div class="song-thumb">
-          <img src=${song.thumbnail}>
-        </div>
+      <a target="_blank" href="${song.webpage_url}">
+        <img src="${song.thumbnail}">
       </a>
       <div class="songtitle">
         ${song.title}
@@ -27,13 +25,13 @@ function createQueue(username, queues) {
     <div class="queue">
       <div class="name">${username}</div>
       <div class="songList">
-        ${queues[username].map((song, index) => createSong(song, `removeSong(${index})`))}
+        ${queues[username].map((song, index) => createSong(song, `removeSong(${index})`, username)).join('')}
       </div>
     </div>`;
 }
 
 function toggleSongEntry() {
-  inputSongURL = document.getElementById('input-songurl');
+  const inputSongURL = document.getElementById('input-songurl');
   if (inputSongURL.disabled) { inputSongURL.value = ''; }
   inputSongURL.toggleAttribute('disabled');
   document.getElementById('b-songurl').toggleAttribute('disabled');
@@ -65,26 +63,31 @@ function socketHandler(event) {
   if (event.data === 'ok') { // ACK adding to queue
     toggleSongEntry();
   } else if (event.data === 'pong') {
-  } else if (event.data === 'error') {
+  } else if (event.data.substr(0, event.data.indexOf(' ')) === 'error') {
     toggleSongEntry();
-    document.getElementById('songurlerror').hidden = false;
+    document.getElementById('error').textContent = event.data.substr(event.data.indexOf(' ') + 1);
+    document.getElementById('error').hidden = false;
   } else { // JSON state recieved
     const {
       currentSong, currentUser, queues, volume, usernames,
     } = JSON.parse(event.data);
+
     setVolume(volume);
+    // Set current playing song
     const currentSongDiv = document.getElementById('currentsong');
     currentSongDiv.innerHTML = '';
     document.getElementById('currentplayer-descr').hidden = currentSong.title === '';
     document.getElementById('noplaying').hidden = currentSong.title !== '';
     if (currentSong.title !== '') { // If no song is currently playing
+      document.getElementById('video').play();
       document.getElementById('currentplayer').innerText = currentUser;
       currentSongDiv.innerHTML = createSong(currentSong, 'skipSong();');
+    } else {
+      document.getElementById('video').pause();
     }
-
+    // Setup queues
     const queueListDiv = document.getElementById('queuelist');
     queueListDiv.innerHTML = '';
-
     for (const username of usernames || []) {
       queueListDiv.innerHTML += createQueue(username, queues);
     }
@@ -97,7 +100,6 @@ function wsInit() {
   document.getElementById('starttext').hidden = false;
   document.getElementById('nameentry').hidden = true;
   document.getElementById('interface').hidden = true;
-
   // generate a relative websocket path
   const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
   let defaultPath = window.location.pathname;
@@ -143,7 +145,7 @@ function heartbeat() {
   setTimeout(checkIsAlive, 2000);
 }
 
-window.removeSong = (queuePos) => { sock.send(`remove ${queuePos}`); };
+window.removeSong = (queuePos) => sock.send(`remove ${queuePos}`);
 
 window.skipSong = () => { sock.send('skip'); };
 
@@ -154,7 +156,7 @@ window.onload = () => {
   setInterval(heartbeat, 15000);
 
   // make error messages disappear when we click on them
-  document.getElementById('songurlerror').onclick = (event) => { event.target.hidden = false; };
+  document.getElementById('error').onclick = (event) => { event.target.hidden = false; };
   document.getElementById('nameerror').onclick = (event) => { event.target.hidden = false; };
 
   document.getElementById('b-entername').onclick = submitName;
