@@ -16,7 +16,7 @@ function createSong(song, onclick, username = null) {
       <div class="songtitle">
         ${song.title}
       </div>
-      ${username === null || username === name ? `<button class="b-remove" onclick='${onclick}'></button>` : ''}
+      ${username === null || username === name ? `<button class="b-remove" onclick="${onclick}"></button>` : ''}
     </div>`;
 }
 
