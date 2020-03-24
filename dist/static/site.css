@@ -72,6 +72,10 @@ input[type="text"] {
   transition: 40ms ease-in-out border-color;
 }
 
+input[type="text"]:disabled {
+  color: #888;
+}
+
 input:focus {
   background: #222;
   border: 2px solid #a50bca;
@@ -94,7 +98,7 @@ button {
   border: none;
   cursor: pointer;
   transition: 120ms ease-in-out;
-  transition-property: background-color padding color;
+  transition-property: background-color, padding, color;
 }
 
 button:after {
@@ -103,14 +107,18 @@ button:after {
   margin-left: 6px;
 }
 
-button:hover:after {
+button:hover:after:not([disabled]) {
   margin-left: 10px;
 }
 
-button:hover {
+button:hover:not([disabled]) {
   background: #a50bca;
   color: #fff;
   padding: 10px 20px;
+}
+
+button:disabled {
+  cursor: default;
 }
 
 main {
@@ -158,7 +166,7 @@ main {
   from {
     transform: translateX(0px);
   }
-  100% {
+  to {
     transform: translateX(30px);
   }
 }
